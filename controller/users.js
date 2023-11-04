@@ -1,19 +1,23 @@
 const User = require("../models/userModel");
 
 module.exports = {
-  index: (req, res) => {
-    if (users.length > 0) {
-      res.json({
-        status: true,
-        data: users,
-        method: req.method,
-        url: req.url,
-      });
-    } else {
-      res.json({
-        status: false,
-        message: "Data tidak tersedia atau masih kosong",
-      });
+  index: async (req, res) => {
+    try {
+      if (users.length > 0) {
+        res.json({
+          status: true,
+          data: users,
+          method: req.method,
+          url: req.url,
+        });
+      } else {
+        res.json({
+          status: false,
+          message: "Data tidak tersedia atau masih kosong",
+        });
+      }
+    } catch (error) {
+      res.status(400).json({ success: false });
     }
   },
   store: (req, res) => {
