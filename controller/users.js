@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 
 module.exports = {
+  // Get Users
   index: async (req, res) => {
     try {
       const users = await User.find();
@@ -21,6 +22,22 @@ module.exports = {
       res.status(400).json({ success: false });
     }
   },
+  //   Get User By ID
+  show: async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      res.json({
+        status: true,
+        data: user,
+        method: req.method,
+        url: req.url,
+        message: "Data berhasil didapatkan",
+      });
+    } catch (error) {
+      res.status(400).json({ success: false });
+    }
+  },
+  //   Create User
   store: async (req, res) => {
     try {
       const userRequest = await User.create(req.body);
@@ -35,6 +52,7 @@ module.exports = {
       res.status(400).json({ success: false });
     }
   },
+  //   Update User
   update: async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -52,16 +70,18 @@ module.exports = {
       res.status(400).json({ success: false });
     }
   },
-  delete: (req, res) => {
-    const id = req.params.id;
-    users = users.filter((user) => user.id != id);
-
-    res.json({
-      status: true,
-      data: users,
-      method: req.method,
-      url: req.url,
-      message: "Data berhasil dihapus",
-    });
+  //   Delete User
+  delete: async (req, res) => {
+    try {
+      await User.findByIdAndDelete(req.params.id);
+      res.json({
+        status: true,
+        method: req.method,
+        url: req.url,
+        message: "Data berhasil dihapus",
+      });
+    } catch (error) {
+      res.status(400).json({ success: false });
+    }
   },
 };
